@@ -48,7 +48,7 @@ def __main__():
 	key = Key_matrix(key)
 	message = String(sys.argv[1])
 	message = Message_matrix(message, key)
-	matrice = multiplication(message, key)
+	matrice = message.multiplication(key)
 	display(key, matrice)
 
 if (sys.argv[3] == "0"):

@@ -7,11 +7,45 @@
 
 from math import sqrt
 
-class Key_matrix:
+
+class Matrix:
+	def __init__(self, matrix):
+		self.matrice = matrix
+		self.lines = len(self.matrice)
+		self.cols = len(self.matrice[0])
+	def define_matrice(self, lines, cols):
+		i = 0
+		matrice = [0] * lines
+		while i != lines:
+			matrice[i] = [0] * cols
+			i = i + 1
+		return (matrice)
+	def calcul(self, other, lines, cols):
+		size = self.cols
+		i = 0
+		somme = 0
+		while i < size:
+			somme = somme + (self.matrice[lines][i] * other.matrice[i][cols])
+			i = i + 1
+		return (somme)
+	def multiplication(self, other):
+		lines = 0
+		cols = 0
+		somme = 0
+		matrice = self.define_matrice(self.lines, other.cols)
+		matrice = Matrix(matrice)
+		while lines < matrice.lines:
+			cols = 0
+			while cols < matrice.cols:
+				matrice.matrice[lines][cols] = self.calcul(other, lines, cols)
+				cols = cols + 1
+			lines = lines + 1
+		return (matrice)
+
+class Key_matrix(Matrix):
 	def __init__(self, key):
 		self.matrice = self.create_matrice(key)
-		self.lines = len(self.matrice)
-		self.cols = self.lines
+		Matrix.__init__(self, self.matrice)
 	def create_matrice(self, key):
 		i = 0
 		tmp = len(key.tab)
@@ -38,11 +72,12 @@ class Key_matrix:
 				lines = lines + 1
 		return (matrice)
 
-class Message_matrix:
+class Message_matrix(Matrix):
 	def __init__(self, message, key):
 		self.cols = key.cols
 		self.lines = self.determinate_lines(message)
 		self.matrice = self.create_matrice(message)
+		Matrix.__init__(self, self.matrice)
 	def determinate_lines(self, message):
 		size_message = len(message.tab)
 		size = size_message / self.cols
@@ -70,40 +105,3 @@ class Message_matrix:
 				cols = 0
 				lines = lines + 1
 		return (matrice)
-
-class Matrix:
-	def __init__(self, matrix):
-		self.matrice = matrix
-		self.lines = len(self.matrice)
-		self.cols = len(self.matrice[0])
-
-def define_matrice(lines, cols):
-	i = 0
-	matrice = [0] * lines
-	while i != lines:
-		matrice[i] = [0] * cols
-		i = i + 1
-	return (matrice)
-
-def calcul(message, key, lines, cols):
-	size = message.cols
-	i = 0
-	somme = 0
-	while i < size:
-		somme = somme + (message.matrice[lines][i] * key.matrice[i][cols])
-		i = i + 1
-	return (somme)
-
-def multiplication(message, key):
-	lines = 0
-	cols = 0
-	somme = 0
-	matrice = define_matrice(message.lines, key.cols)
-	matrice = Matrix(matrice)
-	while lines < matrice.lines:
-		cols = 0
-		while cols < matrice.cols:
-			matrice.matrice[lines][cols] = calcul(message, key, lines, cols)
-			cols = cols + 1
-		lines = lines + 1
-	return (matrice)
