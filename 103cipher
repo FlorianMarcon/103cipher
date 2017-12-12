@@ -1,0 +1,55 @@
+#!/usr/bin/env python3
+
+'''/*
+** EPITECH PROJECT, 2017
+** 103cypher
+** File description:
+** main
+*/'''
+
+import sys
+from string import String
+from matrix import *
+from math import *
+
+def display_key(key):
+	lines = 0
+	cols = 0
+	while lines != key.lines:
+		cols = 0
+		while cols != key.cols:
+			print (key.matrice[lines][cols], end = '')
+			if cols + 1 != key.cols:
+				print ("	", end = '')
+			cols = cols + 1
+		print ()
+		lines = lines + 1
+
+def display_encrypted(matrice):
+	lines = 0
+	cols = 0
+	print ("Encrypted message :")
+	while lines != matrice.lines:
+		cols = 0
+		while cols != matrice.cols:
+			print (matrice.matrice[lines][cols], end = '')
+			print (" ", end = '')
+			cols = cols + 1
+		lines = lines + 1
+	print ()
+
+def display(key, matrice):
+	print ("key matrix :")
+	display_key(key)
+	display_encrypted(matrice);
+
+def __main__():
+	key = String(sys.argv[2])
+	key = Key_matrix(key)
+	message = String(sys.argv[1])
+	message = Message_matrix(message, key)
+	matrice = multiplication(message, key)
+	display(key, matrice)
+
+if (sys.argv[3] == "0"):
+	__main__()
