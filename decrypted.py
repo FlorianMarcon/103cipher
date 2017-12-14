@@ -5,6 +5,7 @@ from number import *
 def display_encrypted(key, message):
 	lines = 0
 	cols = 0
+	key = round_matrice(key)
 	print ("Key matrix :")
 	display_key(key)
 	print ()
@@ -12,7 +13,7 @@ def display_encrypted(key, message):
 	while lines != message.lines:
 		cols = 0
 		while cols != message.cols:
-			print (chr(int(message.matrice[lines][cols])), end = '')
+			print (chr(int(round(message.matrice[lines][cols]))), end = '')
 			cols = cols + 1
 		lines = lines + 1
 	print ()
@@ -35,6 +36,5 @@ def decrypted():
 	message = Message_matrix(message, key)
 	key = key.inverse_matrice
 	key = Matrix(key)
-	key = round_matrice(key)
 	message = message.multiplication(key)
 	display_encrypted(key, message)
