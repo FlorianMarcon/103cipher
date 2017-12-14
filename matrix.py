@@ -6,18 +6,27 @@
 */'''
 
 from math import sqrt
-
+from copy import copy, deepcopy
 
 class Matrix:
 	def __init__(self, matrix):
 		self.matrice = matrix
 		self.lines = len(self.matrice)
 		self.cols = len(self.matrice[0])
+		if self.lines == self.cols:
+			self.inverse()
 	def define_matrice(self, lines, cols):
 		i = 0
 		matrice = [0] * lines
 		while i != lines:
 			matrice[i] = [0] * cols
+			i = i + 1
+		return (matrice)
+	def define_matrice_identity(self, size):
+		matrice = self.define_matrice(size, size)
+		i = 0
+		while i != size:
+			matrice[i][i] = 1
 			i = i + 1
 		return (matrice)
 	def calcul(self, other, lines, cols):
@@ -41,6 +50,62 @@ class Matrix:
 				cols = cols + 1
 			lines = lines + 1
 		return (matrice)
+	def search_max(self, j):
+		i = j
+		var = i
+		while i != self.lines:
+			if abs(self.tmp_matrice[i][j]) > abs(self.tmp_matrice[var][j]):
+				var = i
+			i = i + 1
+		return (var)
+	def normalisation(self, k, j):
+		pivot = self.tmp_matrice[k][j]
+		i = 0
+		while i != self.cols:
+			self.tmp_matrice[k][i] = self.tmp_matrice[k][i] / pivot
+			self.inverse_matrice[k][i] = self.inverse_matrice[k][i] / pivot
+			i = i + 1
+	def swap(self, k, r):
+		tmp = 0
+		tmp2 = 0
+		i = 0
+		while i != self.cols:
+			tmp = self.tmp_matrice[k][i]
+			self.tmp_matrice[k][i] = self.tmp_matrice[r][i]
+			self.tmp_matrice[r][i] = tmp
+			tmp2 = self.inverse_matrice[k][i]
+			self.inverse_matrice[k][i] = self.inverse_matrice[r][i]
+			self.inverse_matrice[r][i] = tmp2
+			i = i + 1
+	def sub(self, r, i, j):
+		cols = 0
+		var = 0
+		pivot = self.tmp_matrice[i][j]
+		while cols != self.cols:
+			var = self.tmp_matrice[r][cols] * pivot
+			self.tmp_matrice[i][cols] = self.tmp_matrice[i][cols] - var
+			var = self.inverse_matrice[r][cols] * pivot
+			self.inverse_matrice[i][cols] = self.inverse_matrice[i][cols] - var
+			cols = cols + 1
+	def simplification(self, r, j):
+		i = 0
+		while i != self.lines:
+			if i != r:
+				self.sub(r, i, j)
+			i = i + 1
+	def inverse(self):
+		r = -1
+		j = 0
+		self.tmp_matrice = deepcopy(self.matrice)
+		self.inverse_matrice = self.define_matrice_identity(self.lines)
+		while j != self.cols:
+			k = self.search_max(j)
+			if self.tmp_matrice[k][j] != 0:
+				r = r + 1
+				self.normalisation(k, j)
+				self.swap(k, r)
+				self.simplification(r, j)
+			j = j + 1
 
 class Key_matrix(Matrix):
 	def __init__(self, key):
