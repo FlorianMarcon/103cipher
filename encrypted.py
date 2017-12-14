@@ -24,7 +24,8 @@ def display_message_encrypted(matrice):
 		cols = 0
 		while cols != matrice.cols:
 			print (matrice.matrice[lines][cols], end = '')
-			print (" ", end = '')
+			if lines != matrice.lines and cols != matrice.cols:
+				print (" ", end = '')
 			cols = cols + 1
 		lines = lines + 1
 	print ()
