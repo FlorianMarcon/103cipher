@@ -2,7 +2,7 @@ import sys
 from encrypted import *
 from number import *
 
-def display_encrypted(key, message):
+def display_decrypted(key, message):
 	lines = 0
 	cols = 0
 	key = round_matrice(key)
@@ -13,7 +13,8 @@ def display_encrypted(key, message):
 	while lines != message.lines:
 		cols = 0
 		while cols != message.cols:
-			print (chr(int(round(message.matrice[lines][cols]))), end = '')
+			if int(round(message.matrice[lines][cols])) >= 32:
+				print (chr(int(round(message.matrice[lines][cols]))), end = '')
 			cols = cols + 1
 		lines = lines + 1
 	print ()
@@ -37,4 +38,4 @@ def decrypted():
 	key = key.inverse_matrice
 	key = Matrix(key)
 	message = message.multiplication(key)
-	display_encrypted(key, message)
+	display_decrypted(key, message)
